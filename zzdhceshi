@@ -1,0 +1,1764 @@
+local WindUI = loadstring(game:HttpGet("https://pastebin.com/raw/qYYUTE4g"))()
+
+local UserGui = Instance.new("ScreenGui", game.CoreGui)
+local UserLabel = Instance.new("TextLabel", UserGui)
+local UIGradient = Instance.new("UIGradient")
+
+UserGui.Name = "UserGui"
+UserGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+UserGui.Enabled = true
+UserLabel.Name = "UserLabel"
+UserLabel.BackgroundColor3 = Color3.new(1, 1, 1)
+UserLabel.BackgroundTransparency = 1
+UserLabel.BorderColor3 = Color3.new(0, 0, 0)
+UserLabel.Position = UDim2.new(0.80, 0.80, 0.00090, 0)
+UserLabel.Size = UDim2.new(0, 135, 0, 50)
+UserLabel.Font = Enum.Font.GothamSemibold
+UserLabel.Text = "尊敬的：" .. game.Players.LocalPlayer.Character.Name ..
+                     "付费版用户，欢迎使用Rb脚本中心！"
+UserLabel.TextColor3 = Color3.new(1, 1, 1)
+UserLabel.TextScaled = true
+UserLabel.TextSize = 14
+UserLabel.TextWrapped = true
+UserLabel.Visible = true
+
+UIGradient.Color = ColorSequence.new {ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 0, 0)),
+                                      ColorSequenceKeypoint.new(0.10, Color3.fromRGB(255, 127, 0)),
+                                      ColorSequenceKeypoint.new(0.20, Color3.fromRGB(255, 255, 0)),
+                                      ColorSequenceKeypoint.new(0.30, Color3.fromRGB(0, 255, 0)),
+                                      ColorSequenceKeypoint.new(0.40, Color3.fromRGB(0, 255, 255)),
+                                      ColorSequenceKeypoint.new(0.50, Color3.fromRGB(0, 0, 255)),
+                                      ColorSequenceKeypoint.new(0.60, Color3.fromRGB(139, 0, 255)),
+                                      ColorSequenceKeypoint.new(0.70, Color3.fromRGB(255, 0, 0)),
+                                      ColorSequenceKeypoint.new(0.80, Color3.fromRGB(255, 127, 0)),
+                                      ColorSequenceKeypoint.new(0.90, Color3.fromRGB(255, 255, 0)),
+                                      ColorSequenceKeypoint.new(1.00, Color3.fromRGB(0, 255, 0))}
+UIGradient.Rotation = 10
+UIGradient.Parent = UserLabel
+
+local TweenService = game:GetService("TweenService")
+local tweeninfo = TweenInfo.new(7, Enum.EasingStyle.Linear, Enum.EasingDirection.In, -1)
+local tween = TweenService:Create(UIGradient, tweeninfo, {
+    Rotation = 360
+})
+tween:Play()
+
+WindUI:Localization({
+    Enabled = true,
+    Prefix = "loc:",
+    DefaultLanguage = "ru",
+    Translations = {
+        ["ru"] = {
+            ["WINDUI_EXAMPLE"] = "WindUI Пример",
+            ["WELCOME"] = "Добро пожаловать в WindUI!",
+            ["LIB_DESC"] = "Библиотека для создания красивых интерфейсов",
+            ["SETTINGS"] = "Настройки",
+            ["APPEARANCE"] = "Внешний вид",
+            ["FEATURES"] = "Функционал",
+            ["UTILITIES"] = "Инструменты",
+            ["UI_ELEMENTS"] = "UI Элементы",
+            ["CONFIGURATION"] = "Конфигурация",
+            ["SAVE_CONFIG"] = "Сохранить конфигурацию",
+            ["LOAD_CONFIG"] = "Загрузить конфигурацию",
+            ["THEME_SELECT"] = "Выберите тему",
+            ["TRANSPARENCY"] = "Прозрачность окна"
+        },
+        ["en"] = {
+            ["WINDUI_EXAMPLE"] = "WindUI Example",
+            ["WELCOME"] = "Welcome to WindUI!",
+            ["LIB_DESC"] = "Beautiful UI library for Roblox",
+            ["SETTINGS"] = "Settings",
+            ["APPEARANCE"] = "Appearance",
+            ["FEATURES"] = "Features",
+            ["UTILITIES"] = "Utilities",
+            ["UI_ELEMENTS"] = "UI Elements",
+            ["CONFIGURATION"] = "Configuration",
+            ["SAVE_CONFIG"] = "Save Configuration",
+            ["LOAD_CONFIG"] = "Load Configuration",
+            ["THEME_SELECT"] = "Select Theme",
+            ["TRANSPARENCY"] = "Window Transparency"
+        }
+    }
+})
+
+WindUI.TransparencyValue = 0.2
+WindUI:SetTheme("Dark")
+
+local function gradient(text, startColor, endColor)
+    local result = ""
+    for i = 1, #text do
+        local t = (i - 1) / (#text - 1)
+        local r = math.floor((startColor.R + (endColor.R - startColor.R) * t) * 255)
+        local g = math.floor((startColor.G + (endColor.G - startColor.G) * t) * 255)
+        local b = math.floor((startColor.B + (endColor.B - startColor.B) * t) * 255)
+        result = result .. string.format('<font color="rgb(%d,%d,%d)">%s</font>', r, g, b, text:sub(i, i))
+    end
+    return result
+end
+
+local Confirmed = false
+
+WindUI:Popup({
+    Title = gradient("RbScript Hub", Color3.fromHex("#6A11CB"), Color3.fromHex("#2575FC")),
+    Icon = "sparkles",
+    IconThemed = true,
+    Content = "欢迎使用付费版！",
+    Buttons = {{
+        Title = "取消",
+
+        Callback = function()
+        end,
+        Variant = "Secondary"
+    }, {
+        Title = "确认",
+        Icon = "arrow-right",
+        Callback = function()
+            Confirmed = true
+        end,
+        Variant = "Primary"
+    }}
+})
+
+local Window = WindUI:CreateWindow({
+    Title = "Rb脚本中心",
+    Icon = "rbxassetid://105933835532108",
+    Author = "付费版 Yungengxin",
+    Folder = "脚本中心",
+    Size = UDim2.fromOffset(480, 360),
+    Theme = "Dark",
+    Background = WindUI:Gradient({
+        ["0"] = {
+            Color = Color3.fromHex("#0f0c29"),
+            Transparency = 1
+        },
+        ["100"] = {
+            Color = Color3.fromHex("#302b63"),
+            Transparency = 0.9
+        }
+    }, {
+        Rotation = 45
+    }),
+    Background = "rbxassetid://133155269071576",
+    User = {
+        Enabled = true,
+        Anonymous = false,
+        Callback = function()
+
+            WindUI:Notify({
+                Title = "您的用户ID：",
+                Content = (game:GetService("Players").LocalPlayer.UserId),
+                Duration = 3
+            })
+        end
+    },
+    SideBarWidth = 220,
+    HideSearchBar = false,
+    ScrollBarEnabled = true
+})
+
+Window:Tag({
+    Title = "v1.0.0",
+    Color = Color3.fromHex("#30ff6a")
+})
+
+Window:CreateTopbarButton("theme-switcher", "moon", function()
+    WindUI:SetTheme(WindUI:GetCurrentTheme() == "Dark" and "Light" or "Dark")
+    WindUI:Notify({
+        Title = "Theme Changed",
+        Content = "Current theme: " .. WindUI:GetCurrentTheme(),
+        Duration = 2
+    })
+end, 990)
+
+local Tabs = {
+    Main = Window:Section({
+        Title = "通用",
+        Opened = true
+    }),
+    gn = Window:Section({
+        Title = "功能",
+        Opened = true
+    }),
+    Settings = Window:Section({
+        Title = "UI设置",
+        Opened = true
+    }),
+    Utilities = Window:Section({
+        Title = "保存配置",
+        Opened = true
+    })
+}
+
+local TabHandles = {
+    xx = Tabs.Main:Tab({
+        Title = "游戏信息",
+        Icon = "layout-grid"
+    }),
+    Elements = Tabs.Main:Tab({
+        Title = "玩家功能",
+        Icon = "layout-grid"
+    }),
+    gn = Tabs.gn:Tab({
+        Title = "主要功能",
+        Icon = "layout-grid"
+    }),
+    rpgfaction = Tabs.gn:Tab({
+        Title = "RPG功能",
+        Icon = "layout-grid"
+    }),
+    tycoon = Tabs.gn:Tab({
+        Title = "传送功能",
+        Icon = "layout-grid"
+    }),
+    Appearance = Tabs.Settings:Tab({
+        Title = "UI外观",
+        Icon = "brush"
+    }),
+    Config = Tabs.Utilities:Tab({
+        Title = "调整配置",
+        Icon = "settings"
+    })
+}
+
+TabHandles.xx:Paragraph({
+    Title = "您的游戏名称：",
+    Desc = "" .. game:GetService("Players").LocalPlayer.DisplayName .. "",
+    Buttons = {{
+        Title = "复制您的名称",
+        Icon = "copy",
+        Variant = "Primary",
+        Callback = function()
+
+            setclipboard(game:GetService("Players").LocalPlayer.DisplayName)
+
+            local Sound = Instance.new("Sound", game:GetService("SoundService"))
+            Sound.SoundId = "rbxassetid://2865227271"
+            Sound:Play()
+            WindUI:Notify({
+                Title = "Rb脚本中心---提示：",
+                Icon = "copy",
+                Content = "已成功复制！",
+                Icon = "bell",
+                IconThemed = true,
+                Duration = 5
+            })
+
+        end,
+        Icon = "bird"
+    }}
+})
+
+TabHandles.xx:Paragraph({
+    Title = "您的游戏用户名：",
+    Desc = "" .. game:GetService("Players").LocalPlayer.Name .. "",
+    Buttons = {{
+        Title = "复制您的用户名",
+        Icon = "copy",
+        Variant = "Primary",
+        Callback = function()
+
+            setclipboard(game:GetService("Players").LocalPlayer.Name)
+
+            local Sound = Instance.new("Sound", game:GetService("SoundService"))
+            Sound.SoundId = "rbxassetid://2865227271"
+            Sound:Play()
+            WindUI:Notify({
+                Title = "Rb脚本中心---提示：",
+                Content = "已成功复制！",
+                Icon = "bell",
+                IconThemed = true,
+                Duration = 5
+            })
+
+        end,
+        Icon = "bird"
+    }}
+})
+
+TabHandles.xx:Paragraph({
+    Title = "您的用户名ID：",
+    Desc = "" .. game:GetService("Players").LocalPlayer.UserId .. "",
+    Buttons = {{
+        Title = "复制您的用户名ID",
+        Icon = "copy",
+        Variant = "Primary",
+        Callback = function()
+
+            setclipboard(game:GetService("Players").LocalPlayer.UserId)
+
+            local Sound = Instance.new("Sound", game:GetService("SoundService"))
+            Sound.SoundId = "rbxassetid://2865227271"
+            Sound:Play()
+            WindUI:Notify({
+                Title = "Rb脚本中心---提示：",
+                Content = "已成功复制！",
+                Icon = "bell",
+                IconThemed = true,
+                Duration = 5
+            })
+
+        end,
+        Icon = "bird"
+    }}
+})
+
+TabHandles.xx:Paragraph({
+    Title = "您的账号注册时间（天）：",
+    Desc = "" .. game:GetService("Players").LocalPlayer.AccountAge .. "",
+    Buttons = {{
+        Title = "复制您的注册时间",
+        Icon = "copy",
+        Variant = "Primary",
+        Callback = function()
+
+            setclipboard(game:GetService("Players").LocalPlayer.AccountAge)
+
+            local Sound = Instance.new("Sound", game:GetService("SoundService"))
+            Sound.SoundId = "rbxassetid://2865227271"
+            Sound:Play()
+            WindUI:Notify({
+                Title = "Rb脚本中心---提示：",
+                Content = "已成功复制！",
+                Icon = "bell",
+                IconThemed = true,
+                Duration = 5
+            })
+
+        end,
+        Icon = "bird"
+    }}
+})
+
+TabHandles.xx:Paragraph({
+    Title = "您所在的服务器名称：",
+    Desc = "" .. game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name .. "",
+    Buttons = {{
+        Title = "复制您所在的服务器名称",
+        Icon = "copy",
+        Variant = "Primary",
+        Callback = function()
+
+            setclipboard(game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name)
+
+            local Sound = Instance.new("Sound", game:GetService("SoundService"))
+            Sound.SoundId = "rbxassetid://2865227271"
+            Sound:Play()
+            WindUI:Notify({
+                Title = "Rb脚本中心---提示：",
+                Content = "已成功复制！",
+                Icon = "bell",
+                IconThemed = true,
+                Duration = 5
+            })
+
+        end,
+        Icon = "bird"
+    }}
+})
+
+TabHandles.xx:Paragraph({
+    Title = "您所在的服务器ID：",
+    Desc = "" .. game.PlaceId .. "",
+    Buttons = {{
+        Title = "复制您所在的服务器ID",
+        Icon = "copy",
+        Variant = "Primary",
+        Callback = function()
+
+            setclipboard("无法复制")
+
+            local Sound = Instance.new("Sound", game:GetService("SoundService"))
+            Sound.SoundId = "rbxassetid://2865227271"
+            Sound:Play()
+            WindUI:Notify({
+                Title = "Rb脚本中心---提示：",
+                Content = "已成功复制！",
+                Icon = "bell",
+                IconThemed = true,
+                Duration = 5
+            })
+
+        end,
+        Icon = "bird"
+    }}
+})
+
+TabHandles.xx:Paragraph({
+    Title = "您的注入器：",
+    Desc = "" .. identifyexecutor() .. "",
+    Image = "rbxassetid://129287693322764",
+    ImageSize = 42,
+    Thumbnail = "rbxassetid://94512740386917",
+    ThumbnailSize = 120,
+    Buttons = {{
+        Title = "测试您注入器的UNC",
+        Variant = "Primary",
+        Callback = function()
+            Window:Dialog({
+                Title = "Rb脚本中心",
+                Content = "温馨提示：请勿点击多次，\n否则会造成游戏卡顿!",
+                Icon = "bell",
+                Buttons = {{
+                    Title = "确定",
+                    Variant = "Primary",
+                    Callback = function()
+                        print("ok")
+                    end
+                }}
+            })
+            loadstring(game:HttpGet "https://raw.githubusercontent.com/Yungengxin/roblox/refs/heads/main/unc")()
+
+            local Sound = Instance.new("Sound", game:GetService("SoundService"))
+            Sound.SoundId = "rbxassetid://2865227271"
+            Sound:Play()
+            WindUI:Notify({
+                Title = "Rb脚本中心---提示：",
+                Content = "已成功执行，请在控制台查看UNC！",
+                Icon = "bell",
+                IconThemed = true,
+                Duration = 5
+            })
+
+        end,
+        Icon = "bird"
+    }}
+})
+
+TabHandles.xx:Code({
+    Title = "Rb脚本中心交流群（主群）",
+    Code = [[https://qm.qq.com/q/csDfI4BZNm]]
+})
+
+TabHandles.xx:Code({
+    Title = "Rb脚本中心交流群（Discord群）",
+    Code = [[https://discord.gg/qZmW3PYd9T]]
+})
+
+local intensitySlider = TabHandles.Elements:Slider({
+    Title = "玩家速度",
+    Desc = "speedwalk",
+    Value = {
+        Min = 0,
+        Max = 1000,
+        Default = 16
+    },
+    Callback = function(value)
+        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = value
+    end
+})
+
+local intensitySlider = TabHandles.Elements:Slider({
+    Title = "玩家速度V2",
+    Desc = "tpwalk",
+    Value = {
+        Min = 0,
+        Max = 10,
+        Default = 0
+    },
+    Callback = function(value)
+        local tpWalk = {}
+
+        local Players = game:GetService("Players")
+        local RunService = game:GetService("RunService")
+        local UserInputService = game:GetService("UserInputService")
+
+        local player = Players.LocalPlayer
+        local character = player.Character or player.CharacterAdded:Wait()
+        local humanoid = character:WaitForChild("Humanoid")
+        local rootPart = character:WaitForChild("HumanoidRootPart")
+
+        local teleportDistance = value
+        local isTeleporting = true
+
+        local function DisableDefaultMovement()
+            humanoid:SetStateEnabled(Enum.HumanoidStateType.Climbing, false)
+            humanoid:SetStateEnabled(Enum.HumanoidStateType.FallingDown, false)
+            humanoid:SetStateEnabled(Enum.HumanoidStateType.Flying, false)
+            humanoid:SetStateEnabled(Enum.HumanoidStateType.Freefall, false)
+            humanoid:SetStateEnabled(Enum.HumanoidStateType.GettingUp, false)
+            humanoid:SetStateEnabled(Enum.HumanoidStateType.Jumping, false)
+            humanoid:SetStateEnabled(Enum.HumanoidStateType.Landed, false)
+            humanoid:SetStateEnabled(Enum.HumanoidStateType.Physics, false)
+            humanoid:SetStateEnabled(Enum.HumanoidStateType.PlatformStanding, false)
+            humanoid:SetStateEnabled(Enum.HumanoidStateType.Ragdoll, false)
+            humanoid:SetStateEnabled(Enum.HumanoidStateType.Running, false)
+            humanoid:SetStateEnabled(Enum.HumanoidStateType.RunningNoPhysics, false)
+            humanoid:SetStateEnabled(Enum.HumanoidStateType.Seated, false)
+            humanoid:SetStateEnabled(Enum.HumanoidStateType.StrafingNoPhysics, false)
+            humanoid:SetStateEnabled(Enum.HumanoidStateType.Swimming, false)
+        end
+
+        local function EnableDefaultMovement()
+            humanoid:SetStateEnabled(Enum.HumanoidStateType.Climbing, true)
+            humanoid:SetStateEnabled(Enum.HumanoidStateType.FallingDown, true)
+            humanoid:SetStateEnabled(Enum.HumanoidStateType.Flying, true)
+            humanoid:SetStateEnabled(Enum.HumanoidStateType.Freefall, true)
+            humanoid:SetStateEnabled(Enum.HumanoidStateType.GettingUp, true)
+            humanoid:SetStateEnabled(Enum.HumanoidStateType.Jumping, true)
+            humanoid:SetStateEnabled(Enum.HumanoidStateType.Landed, true)
+            humanoid:SetStateEnabled(Enum.HumanoidStateType.Physics, true)
+            humanoid:SetStateEnabled(Enum.HumanoidStateType.PlatformStanding, true)
+            humanoid:SetStateEnabled(Enum.HumanoidStateType.Ragdoll, true)
+            humanoid:SetStateEnabled(Enum.HumanoidStateType.Running, true)
+            humanoid:SetStateEnabled(Enum.HumanoidStateType.RunningNoPhysics, true)
+            humanoid:SetStateEnabled(Enum.HumanoidStateType.Seated, true)
+            humanoid:SetStateEnabled(Enum.HumanoidStateType.StrafingNoPhysics, true)
+            humanoid:SetStateEnabled(Enum.HumanoidStateType.Swimming, true)
+        end
+
+        local function Teleport()
+            if not isTeleporting or not rootPart or not humanoid then
+                return
+            end
+
+            local moveDirection = humanoid.MoveDirection
+            if moveDirection.Magnitude == 0 then
+                return
+            end
+
+            local teleportVector = moveDirection * teleportDistance
+
+            local raycastParams = RaycastParams.new()
+            raycastParams.FilterDescendantsInstances = {character}
+            raycastParams.FilterType = Enum.RaycastFilterType.Blacklist
+
+            local raycastResult = workspace:Raycast(rootPart.Position, teleportVector, raycastParams)
+
+            if raycastResult then
+
+                teleportVector = (raycastResult.Position - rootPart.Position).Unit * teleportDistance
+            end
+
+            rootPart.CFrame = rootPart.CFrame + teleportVector
+        end
+
+        function tpWalk:Enabled(enabled)
+            isTeleporting = enabled
+            if enabled then
+                DisableDefaultMovement()
+            else
+                EnableDefaultMovement()
+            end
+        end
+
+        function tpWalk:GetEnabled()
+            return isTeleporting
+        end
+
+        function tpWalk:SetSpeed(speed)
+            teleportDistance = speed or 0.1
+        end
+
+        function tpWalk:GetSpeed()
+            return teleportDistance
+        end
+
+        RunService.Heartbeat:Connect(function()
+            if isTeleporting then
+                Teleport()
+            end
+        end)
+
+        return tpWalk
+    end
+})
+
+local intensitySlider = TabHandles.Elements:Slider({
+    Title = "玩家跳跃",
+    Desc = "JumpPower",
+    Value = {
+        Min = 0,
+        Max = 1000,
+        Default = 50
+    },
+    Callback = function(value)
+        game.Players.LocalPlayer.Character.Humanoid.JumpPower = value
+    end
+})
+
+local intensitySlider = TabHandles.Elements:Slider({
+    Title = "玩家重力",
+    Desc = "gravity",
+    Value = {
+        Min = 0,
+        Max = 1000,
+        Default = 309
+    },
+    Callback = function(value)
+        game.Workspace.Gravity = value
+    end
+})
+
+TabHandles.Elements:Divider()
+
+local featureToggle = TabHandles.Elements:Toggle({
+    Title = "夜视",
+    Desc = "使你的游戏亮度提高",
+    Value = false,
+    Callback = function(state)
+        if state then
+            game.Lighting.Ambient = Color3.new(1, 1, 1)
+        else
+            game.Lighting.Ambient = Color3.new(0, 0, 0)
+        end
+        WindUI:Notify({
+            Title = "Rb脚本中心：",
+            Content = state and "夜视已开启，若仍不清楚可开启去雾功能" or "夜视已关闭",
+            Icon = state and "check" or "x",
+            Duration = 2
+        })
+    end
+})
+
+xrayEnabled = false
+function xray()
+    for _, v in pairs(workspace:GetDescendants()) do
+        if v:IsA("BasePart") and not v.Parent:FindFirstChildWhichIsA("Humanoid") and
+            not v.Parent.Parent:FindFirstChildWhichIsA("Humanoid") then
+            v.LocalTransparencyModifier = xrayEnabled and 0.5 or 0
+        end
+    end
+end
+
+local featureToggle = TabHandles.Elements:Toggle({
+    Title = "地图透视",
+    Desc = "Xray",
+    Value = false,
+    Callback = function(state)
+        if state then
+            xrayEnabled = true
+            xray()
+        else
+            xrayEnabled = false
+            xray()
+        end
+        WindUI:Notify({
+            Title = "Rb脚本中心：",
+            Content = state and "地图透视已开启，若仍不清楚可开启其他视觉功能" or
+                "地图透视已关闭",
+            Icon = state and "check" or "x",
+            Duration = 2
+        })
+    end
+})
+
+local toggleState = false
+
+game:GetService("Players").LocalPlayer.Idled:connect(function()
+    game:GetService("VirtualUser"):Button2Down(Vector2.new(0, 0), workspace.CurrentCamera.CFrame)
+    wait(1)
+    game:GetService("VirtualUser"):Button2Up(Vector2.new(0, 0), workspace.CurrentCamera.CFrame)
+end)
+function NoFog()
+    local c = game.Lighting
+    c.FogEnd = 100000
+    for r, v in pairs(c:GetDescendants()) do
+        if v:IsA("Atmosphere") then
+            v:Destroy()
+        end
+    end
+end
+TabHandles.Elements:Button({
+    Title = "去雾",
+    Desc = "一键去除游戏中的雾",
+    Icon = "bell",
+    Callback = function()
+        NoFog()
+        local Sound = Instance.new("Sound", game:GetService("SoundService"))
+        Sound.SoundId = "rbxassetid://2865227271"
+        Sound:Play()
+        WindUI:Notify({
+            Title = "Rb脚本中心：",
+            Content = "已去雾",
+            Icon = "bell",
+            Duration = 3
+        })
+    end
+})
+TabHandles.Elements:Divider()
+
+TabHandles.Elements:Button({
+    Title = "飞行",
+    Desc = "传统的飞行",
+    Icon = "bell",
+    Callback = function()
+        loadstring(game:HttpGet("https://pastebin.com/raw/CPSm1udG"))()
+        local Sound = Instance.new("Sound", game:GetService("SoundService"))
+        Sound.SoundId = "rbxassetid://2865227271"
+        Sound:Play()
+        WindUI:Notify({
+            Title = "Rb脚本中心：",
+            Content = "成功加载飞行",
+            Icon = "bell",
+            Duration = 3
+        })
+    end
+})
+
+local feewww = false
+local featureToggle = TabHandles.gn:Toggle({
+    Title = "自动箱子",
+    Desc = "Auto crate",
+    Value = false,
+    Callback = function(Value)
+        feewww = Value
+        local Players = game:GetService("Players")
+        local LocalPlayer = Players.LocalPlayer
+        local Crate = workspace["Game Systems"]["Crate Workspace"]
+        local Oil = workspace.Tycoon.Tycoons[LocalPlayer.Team.Name].Essentials["Oil Collector"]
+
+        while feewww and task.wait() do
+            for _, v in Crate:GetChildren() do
+                if not feewww then
+                    break
+                end
+                local StealPrompt = v:WaitForChild("StealPrompt")
+                if StealPrompt.Enabled then
+                    StealPrompt.MaxActivationDistance = 10
+                    LocalPlayer.Character.HumanoidRootPart.CFrame = v.CFrame
+                    StealPrompt.PromptShown:Wait()
+                    task.wait(1)
+                    StealPrompt:InputHoldBegin()
+                    StealPrompt.Triggered:Wait()
+                    LocalPlayer.Character.HumanoidRootPart.CFrame = Oil:WaitForChild("CratePromptPart").CFrame
+                    Oil:WaitForChild("CratePromptPart"):WaitForChild("SellPrompt").PromptShown:Wait()
+                    task.wait(1)
+                    fireproximityprompt(Oil:WaitForChild("CratePromptPart"):WaitForChild("SellPrompt"))
+                end
+            end
+        end
+    end
+})
+
+local isRunning = false
+
+TabHandles.gn:Toggle({
+    Title = "自动升级",
+    Value = false,
+    Callback = function(Value)
+        isRunning = Value
+
+        local excludeColors = {Color3.fromRGB(0, 165, 180), Color3.fromRGB(255, 119, 0), Color3.fromRGB(98, 36, 209),
+                               Color3.fromRGB(215, 45, 109), Color3.fromRGB(98, 37, 209), Color3.fromRGB(255, 255, 0)}
+
+        local function getNeonPositions()
+            local tycoons = workspace:WaitForChild("Tycoon"):WaitForChild("Tycoons")
+            local playerTeam = game:GetService("Players").LocalPlayer.Team.Name
+            return tycoons:WaitForChild(playerTeam):WaitForChild("UnpurchasedButtons"):GetChildren()
+        end
+
+        local function teleportSequence()
+            while isRunning do
+                local currentPositions = getNeonPositions()
+
+                for _, button in ipairs(currentPositions) do
+                    if not isRunning then
+                        break
+                    end
+
+                    if not button:FindFirstChild("Hologram") then
+                        local neon = button:FindFirstChild("Neon")
+                        if neon and neon:IsA("BasePart") then
+                            local shouldExclude = false
+                            for _, color in ipairs(excludeColors) do
+                                if neon.Color == color then
+                                    shouldExclude = true
+                                    break
+                                end
+                            end
+
+                            if not shouldExclude then
+                                for i = 1, 2 do
+                                    if not isRunning then
+                                        break
+                                    end
+                                    if game.Players.LocalPlayer.Character and
+                                        game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = neon.CFrame
+                                    end
+                                    task.wait(0.3)
+                                end
+                            end
+                        end
+                    end
+                end
+                task.wait(0.1)
+            end
+        end
+
+        if Value then
+            coroutine.wrap(teleportSequence)()
+        end
+    end
+})
+
+TabHandles.gn:Button({
+    Title = "ESP",
+    Icon = "bell",
+    Callback = function()
+        _G.FriendColor = Color3.fromRGB(0, 0, 255)
+_G.EnemyColor = Color3.fromRGB(255, 0, 0)
+_G.UseTeamColor = true
+
+--------------------------------------------------------------------
+local Holder = Instance.new("Folder", game.CoreGui)
+Holder.Name = "ESP"
+
+local Box = Instance.new("BoxHandleAdornment")
+Box.Name = "nilBox"
+Box.Size = Vector3.new(1, 2, 1)
+Box.Color3 = Color3.new(100 / 255, 100 / 255, 100 / 255)
+Box.Transparency = 0.7
+Box.ZIndex = 0
+Box.AlwaysOnTop = false
+Box.Visible = false
+
+local NameTag = Instance.new("BillboardGui")
+NameTag.Name = "nilNameTag"
+NameTag.Enabled = false
+NameTag.Size = UDim2.new(0, 200, 0, 50)
+NameTag.AlwaysOnTop = true
+NameTag.StudsOffset = Vector3.new(0, 1.8, 0)
+local Tag = Instance.new("TextLabel", NameTag)
+Tag.Name = "Tag"
+Tag.BackgroundTransparency = 1
+Tag.Position = UDim2.new(0, -50, 0, 0)
+Tag.Size = UDim2.new(0, 300, 0, 20)
+Tag.TextSize = 15
+Tag.TextColor3 = Color3.new(100 / 255, 100 / 255, 100 / 255)
+Tag.TextStrokeColor3 = Color3.new(0 / 255, 0 / 255, 0 / 255)
+Tag.TextStrokeTransparency = 0.4
+Tag.Text = "nil"
+Tag.Font = Enum.Font.SourceSansBold
+Tag.TextScaled = false
+
+local LoadCharacter = function(v)
+	repeat wait() until v.Character ~= nil
+	v.Character:WaitForChild("Humanoid")
+	local vHolder = Holder:FindFirstChild(v.Name)
+	vHolder:ClearAllChildren()
+	local b = Box:Clone()
+	b.Name = v.Name .. "Box"
+	b.Adornee = v.Character
+	b.Parent = vHolder
+	local t = NameTag:Clone()
+	t.Name = v.Name .. "NameTag"
+	t.Enabled = true
+	t.Parent = vHolder
+	t.Adornee = v.Character:WaitForChild("Head", 5)
+	if not t.Adornee then
+		return UnloadCharacter(v)
+	end
+	t.Tag.Text = v.Name
+	b.Color3 = Color3.new(v.TeamColor.r, v.TeamColor.g, v.TeamColor.b)
+	t.Tag.TextColor3 = Color3.new(v.TeamColor.r, v.TeamColor.g, v.TeamColor.b)
+	local Update
+	local UpdateNameTag = function()
+		if not pcall(function()
+			v.Character.Humanoid.DisplayDistanceType = Enum.HumanoidDisplayDistanceType.None
+			local maxh = math.floor(v.Character.Humanoid.MaxHealth)
+			local h = math.floor(v.Character.Humanoid.Health)
+		end) then
+			Update:Disconnect()
+		end
+	end
+	UpdateNameTag()
+	Update = v.Character.Humanoid.Changed:Connect(UpdateNameTag)
+end
+
+local UnloadCharacter = function(v)
+	local vHolder = Holder:FindFirstChild(v.Name)
+	if vHolder and (vHolder:FindFirstChild(v.Name .. "Box") ~= nil or vHolder:FindFirstChild(v.Name .. "NameTag") ~= nil) then
+		vHolder:ClearAllChildren()
+	end
+end
+
+local LoadPlayer = function(v)
+	local vHolder = Instance.new("Folder", Holder)
+	vHolder.Name = v.Name
+	v.CharacterAdded:Connect(function()
+		pcall(LoadCharacter, v)
+	end)
+	v.CharacterRemoving:Connect(function()
+		pcall(UnloadCharacter, v)
+	end)
+	v.Changed:Connect(function(prop)
+		if prop == "TeamColor" then
+			UnloadCharacter(v)
+			wait()
+			LoadCharacter(v)
+		end
+	end)
+	LoadCharacter(v)
+end
+
+local UnloadPlayer = function(v)
+	UnloadCharacter(v)
+	local vHolder = Holder:FindFirstChild(v.Name)
+	if vHolder then
+		vHolder:Destroy()
+	end
+end
+
+for i,v in pairs(game:GetService("Players"):GetPlayers()) do
+	spawn(function() pcall(LoadPlayer, v) end)
+end
+
+game:GetService("Players").PlayerAdded:Connect(function(v)
+	pcall(LoadPlayer, v)
+end)
+
+game:GetService("Players").PlayerRemoving:Connect(function(v)
+	pcall(UnloadPlayer, v)
+end)
+
+game:GetService("Players").LocalPlayer.NameDisplayDistance = 0
+
+if _G.Reantheajfdfjdgs then
+    return
+end
+
+_G.Reantheajfdfjdgs = ":suifayhgvsdghfsfkajewfrhk321rk213kjrgkhj432rj34f67df"
+
+local players = game:GetService("Players")
+local plr = players.LocalPlayer
+
+function esp(target, color)
+    if target.Character then
+        if not target.Character:FindFirstChild("GetReal") then
+            local highlight = Instance.new("Highlight")
+            highlight.RobloxLocked = true
+            highlight.Name = "GetReal"
+            highlight.Adornee = target.Character
+            highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+            highlight.FillColor = color
+            highlight.Parent = target.Character
+        else
+            target.Character.GetReal.FillColor = color
+        end
+    end
+end
+
+while task.wait() do
+    for i, v in pairs(players:GetPlayers()) do
+        if v ~= plr then
+            esp(v, _G.UseTeamColor and v.TeamColor.Color or ((plr.TeamColor == v.TeamColor) and _G.FriendColor or _G.EnemyColor))
+        end
+    end
+end
+end
+})
+TabHandles.gn:Button({
+    Title = "删除所有门",
+    Icon = "bell",
+    Callback = function()
+        local tycoons = workspace:FindFirstChild("Tycoon")
+        if not tycoons then
+            return
+        end
+        tycoons = tycoons:FindFirstChild("Tycoons")
+        if not tycoons then
+            return
+        end
+
+        for _, tycoon in ipairs(tycoons:GetChildren()) do
+            local purchasedObjects = tycoon:FindFirstChild("PurchasedObjects")
+            if purchasedObjects then
+                for _, obj in ipairs(purchasedObjects:GetChildren()) do
+                    local lowerName = obj.Name:lower()
+                    if lowerName:match("door") or lowerName:match("gate") then
+                        obj:Destroy()
+                    end
+                end
+            end
+        end
+    end
+})
+TabHandles.gn:Button({
+    Title = "交互按钮无CD",
+    Icon = "bell",
+    Callback = function()
+        if not connection then
+            connection = game:GetService("ProximityPromptService").PromptButtonHoldBegan:Connect(function(prompt)
+                prompt.HoldDuration = 0
+            end)
+        end
+    end
+})
+
+TabHandles.gn:Button({
+    Title = "获取残骸",
+    Icon = "bell",
+    Callback = function()
+        local reaper = workspace.ResearchCaches:FindFirstChild("Downed Reaper")
+        if reaper then
+            local pivot = reaper:GetPivot()
+            local newPosition = pivot.Position + Vector3.new(0, 5, 0)
+
+            local player = game.Players.LocalPlayer
+            if player.Character then
+                local humanoidRootPart = player.Character:FindFirstChild("HumanoidRootPart")
+                if humanoidRootPart then
+                    humanoidRootPart.CFrame = CFrame.new(newPosition)
+                end
+            end
+        else
+            WindUI:Notify({
+                Title = "ERROR",
+                Content = "残骸未刷新",
+                Duration = 4,
+                Image = 111120935859410
+            })
+
+        end
+    end
+})
+
+local rpgButton = TabHandles.rpgfaction:Button({
+    Title = "获取RPG",
+    Icon = "bell",
+    Callback = function()
+
+        local Players = game:GetService("Players")
+        local localPlayer = Players.LocalPlayer
+        local TycoonsFolder = workspace.Tycoon.Tycoons
+
+        local savedPosition
+
+        local function findNearestTeleportPosition()
+            local character = localPlayer.Character or localPlayer.CharacterAdded:Wait()
+            local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+            local playerPosition = humanoidRootPart.Position
+
+            local closestDistance = math.huge
+            local closestCFrame = nil
+
+            for _, tycoonModel in ipairs(TycoonsFolder:GetChildren()) do
+                if tycoonModel:IsA("Model") then
+                    local purchasedObjects = tycoonModel:FindFirstChild("PurchasedObjects")
+                    if purchasedObjects then
+                        local rpgGiver = purchasedObjects:FindFirstChild("RPG Giver")
+                        if rpgGiver then
+                            local prompt = rpgGiver:FindFirstChild("Prompt")
+                            if prompt and prompt:IsA("BasePart") then
+                                local distance = (playerPosition - prompt.Position).Magnitude
+                                if distance < closestDistance then
+                                    closestDistance = distance
+                                    closestCFrame = prompt.CFrame
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+
+            return closestCFrame
+        end
+
+        local function teleportPlayer()
+
+            local character = localPlayer.Character
+            if not character then
+                return
+            end
+            local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+            if humanoidRootPart then
+                savedPosition = humanoidRootPart.CFrame
+            end
+
+            local targetCFrame = findNearestTeleportPosition()
+            if targetCFrame then
+                humanoidRootPart.CFrame = targetCFrame
+
+                spawn(function()
+                    while wait(0.5) do
+
+                        if not character.Parent then
+                            break
+                        end
+
+                        local backpack = localPlayer:FindFirstChild("Backpack")
+                        if backpack and backpack:FindFirstChild("RPG") then
+
+                            humanoidRootPart.CFrame = savedPosition
+                            break
+                        end
+                    end
+                end)
+            else
+                WindUI:Notify({
+                    Title = "ERROR",
+                    Content = "未能找到附近的RPG",
+                    Duration = 4,
+                    Image = 111120935859410
+                })
+            end
+        end
+
+        teleportPlayer()
+    end
+
+})
+
+local loopActive = false
+TabHandles.rpgfaction:Toggle({
+    Title = "全图",
+    Value = false,
+    Callback = function(Value)
+        loopActive = Value
+
+        if Value then
+            coroutine.wrap(function()
+                local Players = game:GetService("Players")
+                local LocalPlayer = Players.LocalPlayer
+                local ReplicatedStorage = game:GetService("ReplicatedStorage")
+                local RocketSystem = ReplicatedStorage:WaitForChild("RocketSystem")
+                local FireRocket = RocketSystem.Events.FireRocket
+                local RocketHit = RocketSystem.Events.RocketHit
+
+                local attackPhase = "attack"
+                local phaseStartTime = os.clock()
+
+                local function attackProcedure()
+                    local character = LocalPlayer.Character
+                    if not character then
+                        return
+                    end
+                    local rootPart = character:FindFirstChild("HumanoidRootPart")
+                    if not rootPart then
+                        return
+                    end
+
+                    local attackPosition = rootPart.Position + Vector3.new(0, 1000, 0)
+                    local allPlayers = Players:GetPlayers()
+                    local targets = {}
+
+                    for _, player in ipairs(allPlayers) do
+                        if player ~= LocalPlayer and player.Character then
+                            table.insert(targets, player.Character:FindFirstChild("HumanoidRootPart"))
+                        end
+                    end
+
+                    local weapon = LocalPlayer.Character:FindFirstChild("RPG")
+                    if weapon then
+                        for _, target in ipairs(targets) do
+                            if target then
+                                FireRocket:InvokeServer(Vector3.new(), weapon, weapon, attackPosition)
+                                RocketHit:FireServer(attackPosition, Vector3.new(), weapon, weapon, target, nil,
+                                    "asdfghvcqawRocket4")
+                                task.wait(0.1)
+                            end
+                        end
+                    end
+                end
+
+                while loopActive do
+                    local currentTime = os.clock()
+                    local elapsed = currentTime - phaseStartTime
+
+                    if attackPhase == "attack" and elapsed >= 3 then
+                        attackPhase = "pause"
+                        phaseStartTime = os.clock()
+                    elseif attackPhase == "pause" and elapsed >= 2 then
+                        attackPhase = "attack"
+                        phaseStartTime = os.clock()
+                    end
+
+                    if attackPhase == "attack" then
+                        attackProcedure()
+                    end
+
+                    task.wait(0.1)
+                end
+            end)()
+        end
+    end
+})
+
+TabHandles.rpgfaction:Toggle({
+    Title = "护盾攻击",
+    Value = false,
+    Callback = function(Value)
+        local Players = game:GetService("Players")
+        local ReplicatedStorage = game:GetService("ReplicatedStorage")
+        local LocalPlayer = Players.LocalPlayer
+
+        local function GenerateRocketID()
+            local letters = {}
+            for i = 1, math.random(1, 15) do
+                letters[i] = string.char(math.random(65, 90))
+            end
+            return table.concat(letters) .. "Rocket" .. tostring(math.random(1, 1000))
+        end
+
+        local function GetTargets()
+            local targets = {}
+            local tycoonFolder = workspace:WaitForChild("Tycoon"):WaitForChild("Tycoons")
+
+            for _, tycoon in ipairs(tycoonFolder:GetChildren()) do
+                local shield = tycoon:FindFirstChild("PurchasedObjects", true) and
+                                   tycoon.PurchasedObjects:FindFirstChild("Base Shield", true) and
+                                   tycoon.PurchasedObjects["Base Shield"]:FindFirstChild("Shield", true) and
+                                   tycoon.PurchasedObjects["Base Shield"].Shield:FindFirstChild("Shield4", true)
+
+                if shield then
+                    table.insert(targets, shield)
+                end
+            end
+            return targets
+        end
+
+        local function LaunchAttack()
+            local rpg = LocalPlayer.Character:FindFirstChild("RPG")
+            if not rpg then
+                return
+            end
+
+            local attackPosition = LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(0, 1000, 0)
+            local targets = GetTargets()
+
+            for _, shield in ipairs(targets) do
+                local fireArgs = {Vector3.new(0, 0, 0), rpg, rpg, attackPosition}
+                for _ = 1, 2 do
+                    local hitArgs = {attackPosition, Vector3.new(0, -1, 0), rpg, rpg, shield, nil, GenerateRocketID()}
+                    task.spawn(function()
+                        ReplicatedStorage.RocketSystem.Events.RocketHit:FireServer(unpack(hitArgs))
+                        ReplicatedStorage.RocketSystem.Events.FireRocket:InvokeServer(unpack(fireArgs))
+                    end)
+                end
+            end
+        end
+
+        if Value then
+            coroutine.wrap(function()
+                while Value do
+                    LaunchAttack()
+                    task.wait(2)
+                end
+            end)()
+        end
+    end
+})
+
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local RocketSystem = ReplicatedStorage:WaitForChild("RocketSystem")
+local FireRocket = RocketSystem.Events.FireRocket
+local RocketHit = RocketSystem.Events.RocketHit
+
+local attackActive = false
+
+local function getAttackPosition()
+    local LocalPlayer = Players.LocalPlayer
+    if LocalPlayer.Character then
+        local rootPart = LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+        if rootPart then
+            return rootPart.Position + Vector3.new(0, 1000, 0)
+        end
+    end
+    return Vector3.new(0, 0, 0)
+end
+
+local function generateRandomString(length)
+    local chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+    local result = ""
+    for i = 1, length do
+        local randomIndex = math.random(1, #chars)
+        result = result .. string.sub(chars, randomIndex, randomIndex)
+    end
+    return result
+end
+
+local function getSortedPlayerNames()
+    local playerNames = {}
+    for _, player in ipairs(Players:GetPlayers()) do
+        table.insert(playerNames, player.Name)
+    end
+    table.sort(playerNames, function(a, b)
+        return string.lower(a) < string.lower(b)
+    end)
+    return playerNames
+end
+
+local initialAttackTargets = getSortedPlayerNames()
+local initialExcludeTargets = getSortedPlayerNames()
+
+local selectedAttackTargets = {}
+
+local attackTargetsDropdown = TabHandles.rpgfaction:Dropdown({
+    Title = "攻击玩家选择(多选)",
+    Max = 5,
+    Options = initialAttackTargets,
+    Value = {},
+    Multi = true,
+    Callback = function(Value)
+        selectedAttackTargets = Value
+    end
+})
+
+attackTargetsDropdown:Refresh(getSortedPlayerNames())
+
+TabHandles.rpgfaction:Button({
+    Title = "刷新玩家列表",
+    Callback = function()
+        local play = getSortedPlayerNames()
+        attackTargetsDropdown:Refresh(play)
+    end
+})
+
+TabHandles.rpgfaction:Toggle({
+    Title = "开始攻击",
+    Value = false,
+    Callback = function(Value)
+        attackActive = Value
+        if Value then
+            while attackActive do
+                local LocalPlayer = Players.LocalPlayer
+                if LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Humanoid") then
+                    local weapon = LocalPlayer.Character:FindFirstChild("RPG")
+                    if weapon then
+                        local attackPos = getAttackPosition()
+
+                        for _, targetName in ipairs(selectedAttackTargets) do
+                            if not attackActive then
+                                break
+                            end
+                            local player = Players:FindFirstChild(targetName)
+                            if player and player.Character then
+                                local head = player.Character:FindFirstChild("Head")
+                                if head then
+                                    local rocketName = generateRandomString(12) .. "Rocket" .. math.random(1, 100)
+                                    pcall(function()
+                                        FireRocket:InvokeServer(Vector3.new(), weapon, weapon, attackPos)
+                                        RocketHit:FireServer(attackPos, Vector3.new(), weapon, weapon, head, nil,
+                                            rocketName)
+                                    end)
+                                end
+                            end
+                        end
+                    end
+                end
+                if attackActive then
+                    task.wait(0.1)
+                end
+            end
+        end
+    end
+})
+
+local selectedExcludeTargets = {}
+
+local excludeTargetsDropdown = TabHandles.rpgfaction:Dropdown({
+    Title = "不攻击的玩家(多选)",
+    Max = 5,
+    Options = initialExcludeTargets,
+    Value = {},
+    Multi = true,
+    Callback = function(Value)
+        selectedExcludeTargets = Value
+    end
+})
+
+excludeTargetsDropdown:Refresh(getSortedPlayerNames())
+
+local excludeAttackActive = false
+
+TabHandles.rpgfaction:Button({
+    Title = "刷新玩家列表",
+    Callback = function()
+        local newOptions = getSortedPlayerNames()
+        excludeTargetsDropdown:Refresh(newOptions)
+    end
+})
+
+TabHandles.rpgfaction:Toggle({
+    Title = "开启攻击",
+    Value = false,
+    Callback = function(Value)
+        excludeAttackActive = Value
+        if Value then
+            while excludeAttackActive do
+                local LocalPlayer = Players.LocalPlayer
+                if LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Humanoid") then
+                    local weapon = LocalPlayer.Character:FindFirstChild("RPG")
+                    if weapon then
+                        local attackPos = getAttackPosition()
+
+                        local excludeList = {}
+                        for _, name in ipairs(selectedExcludeTargets) do
+                            excludeList[name] = true
+                        end
+
+                        local attackEnd = os.clock() + 2
+                        while os.clock() < attackEnd and excludeAttackActive do
+                            for _, player in ipairs(Players:GetPlayers()) do
+                                if not excludeAttackActive then
+                                    break
+                                end
+                                if player ~= LocalPlayer and not excludeList[player.Name] then
+                                    if player.Character then
+                                        local head = player.Character:FindFirstChild("Head")
+                                        if head then
+                                            local rocketName =
+                                                generateRandomString(12) .. "Rocket" .. math.random(1, 100)
+                                            pcall(function()
+                                                FireRocket:InvokeServer(Vector3.new(), weapon, weapon, attackPos)
+                                                RocketHit:FireServer(attackPos, Vector3.new(), weapon, weapon, head,
+                                                    nil, rocketName)
+                                            end)
+                                        end
+                                    end
+                                end
+                            end
+                            if excludeAttackActive then
+                                task.wait(0.1)
+                            end
+                        end
+
+                        local cooldownEnd = os.clock() + 2
+                        while os.clock() < cooldownEnd and excludeAttackActive do
+                            if excludeAttackActive then
+                                task.wait(0.1)
+                            end
+                        end
+                    end
+                end
+                if excludeAttackActive then
+                    task.wait(0.1)
+                end
+            end
+        end
+    end
+})
+
+local Workspace = game:GetService("Workspace")
+TabHandles.tycoon:Button({
+    Title = "传送到中心点",
+    Callback = function()
+        local gameSystems = Workspace:FindFirstChild("Game Systems")
+        local capturePoint = gameSystems:FindFirstChild("CapturePoint")
+        local flag = capturePoint:FindFirstChild("Flag")
+        local flagPosition = flag:GetPivot()
+
+        local player = Players.LocalPlayer
+        if player.Character then
+            local humanoidRootPart = player.Character:FindFirstChild("HumanoidRootPart")
+            if humanoidRootPart then
+                humanoidRootPart.CFrame = flagPosition
+            end
+        end
+    end
+})
+
+local selectedTycoon = ""
+
+local function getTycoonPartNames()
+    local tycoonFolder = Workspace:FindFirstChild("Tycoon")
+    if not tycoonFolder then
+        return {}
+    end
+
+    local tycoonFloor = tycoonFolder:FindFirstChild("TycoonFloor")
+    if not tycoonFloor then
+        return {}
+    end
+
+    local partNames = {}
+    for _, child in ipairs(tycoonFloor:GetChildren()) do
+        if child:IsA("BasePart") then
+            table.insert(partNames, child.Name)
+        end
+    end
+
+    table.sort(partNames)
+    return partNames
+end
+
+local tycoonDropdown = TabHandles.tycoon:Dropdown({
+    Title = "选择基地",
+    Max = 5,
+    Options = getTycoonPartNames(),
+    Value = "",
+    Multi = false,
+    Callback = function(Value)
+
+        selectedTycoon = Value
+    end
+})
+
+tycoonDropdown:Refresh(getTycoonPartNames())
+
+TabHandles.tycoon:Button({
+    Title = "传送到基地",
+    Callback = function()
+
+        local selectedPartName = selectedTycoon
+        if not selectedPartName or selectedPartName == "" then
+            return
+        end
+
+        local tycoonFolder = Workspace:FindFirstChild("Tycoon")
+        if not tycoonFolder then
+            return
+        end
+
+        local tycoonFloor = tycoonFolder:FindFirstChild("TycoonFloor")
+        if not tycoonFloor then
+            return
+        end
+
+        local selectedPart = tycoonFloor:FindFirstChild(selectedPartName)
+        if not selectedPart then
+            return
+        end
+        local player = Players.LocalPlayer
+        if player.Character then
+            local humanoidRootPart = player.Character:FindFirstChild("HumanoidRootPart")
+            if humanoidRootPart then
+                humanoidRootPart.CFrame = CFrame.new(selectedPart.Position)
+            end
+        end
+    end
+})
+
+local metroLocations = {
+    ["城市北"] = CFrame.new(-951.641235, 30.0500011, -2001.87976, 0.698147535, 0, 0.715953887, 0, 1, 0, -0.715953887,
+        0, 0.698147535),
+    ["城市南"] = CFrame.new(-1594.64673, 30.9047775, -1228.56274, 0.857382357, 0, 0.514679968, 0, 1, 0, -0.514679968,
+        0, 0.857382357),
+    ["沙漠东"] = CFrame.new(1486.33093, 51.0342522, 415.85376, -0.97314024, 0, 0.230212986, 0, 1, 0, -0.230212986, 0,
+        -0.97314024),
+    ["沙漠北"] = CFrame.new(887.810669, 50.1625481, -2854.70459, -0.709376454, 0, -0.704830289, 0, 1, 0, 0.704830289,
+        0, -0.709376454),
+    ["沙漠南"] = CFrame.new(-260.362854, 52.5419121, 1430.14624, 0.00353723764, 0, 0.999993742, 0, 1, 0,
+        -0.999993742, 0, 0.00353723764),
+    ["沙漠西"] = CFrame.new(-2213.47559, 53.1056709, 310.044189, 0.493985295, 0, 0.869470239, 0, 1, 0, -0.869470239,
+        0, 0.493985295)
+}
+
+local metroOptions = {"城市北", "城市南", "沙漠北", "沙漠西", "沙漠南", "沙漠东"}
+local selectedMetro = metroOptions[1]
+
+local metroDropdown = TabHandles.tycoon:Dropdown({
+    Title = "选择地铁位置",
+    Max = 5,
+    Options = metroOptions,
+    Value = selectedMetro,
+    Multi = false,
+    Callback = function(Value)
+        selectedMetro = Value
+    end
+})
+
+metroDropdown:Refresh(metroOptions)
+
+TabHandles.tycoon:Button({
+    Title = "传送到地铁",
+    Callback = function()
+        local location = metroLocations[selectedMetro]
+        if location then
+            local player = Players.LocalPlayer
+            if player.Character then
+                local humanoidRootPart = player.Character:FindFirstChild("HumanoidRootPart")
+                if humanoidRootPart then
+
+                    humanoidRootPart.CFrame = location
+                end
+            end
+        end
+    end
+})
+
+TabHandles.Appearance:Paragraph({
+    Title = "自定义界面",
+    Desc = "个性化您的体验",
+    Image = "palette",
+    ImageSize = 20,
+    Color = "White"
+})
+
+local themes = {}
+for themeName, _ in pairs(WindUI:GetThemes()) do
+    table.insert(themes, themeName)
+end
+table.sort(themes)
+
+local themeDropdown = TabHandles.Appearance:Dropdown({
+    Title = "主题选择",
+    Values = themes,
+    Value = "Dark",
+    Callback = function(theme)
+        WindUI:SetTheme(theme)
+        WindUI:Notify({
+            Title = "主题应用",
+            Content = theme,
+            Icon = "palette",
+            Duration = 2
+        })
+    end
+})
+
+local transparencySlider = TabHandles.Appearance:Slider({
+    Title = "透明度",
+    Value = {
+        Min = 0,
+        Max = 1,
+        Default = 0.2
+    },
+    Step = 0.1,
+    Callback = function(value)
+        Window:ToggleTransparency(tonumber(value) > 0)
+        WindUI.TransparencyValue = tonumber(value)
+    end
+})
+
+TabHandles.Appearance:Toggle({
+    Title = "启用黑色主题",
+    Desc = "使用黑色调主题方案",
+    Value = true,
+    Callback = function(state)
+        WindUI:SetTheme(state and "Dark" or "Light")
+        themeDropdown:Select(state and "Dark" or "Light")
+    end
+})
+
+TabHandles.Appearance:Button({
+    Title = "创建新主题",
+    Icon = "plus",
+    Callback = function()
+        Window:Dialog({
+            Title = "创建主题",
+            Content = "此功能很快就会推出",
+            Buttons = {{
+                Title = "确认",
+                Variant = "Primary"
+            }}
+        })
+    end
+})
+
+TabHandles.Config:Paragraph({
+    Title = "配置管理",
+    Desc = "保存你的设置",
+    Image = "save",
+    ImageSize = 20,
+    Color = "White"
+})
+
+local configName = "default"
+local configFile = nil
+local MyPlayerData = {
+    name = "Player1",
+    level = 1,
+    inventory = {"sword", "shield", "potion"}
+}
+
+TabHandles.Config:Input({
+    Title = "配置名称",
+    Value = configName,
+    Callback = function(value)
+        configName = value
+    end
+})
+
+local ConfigManager = Window.ConfigManager
+if ConfigManager then
+    ConfigManager:Init(Window)
+
+    TabHandles.Config:Button({
+        Title = "保存配置",
+        Icon = "save",
+        Variant = "Primary",
+        Callback = function()
+            configFile = ConfigManager:CreateConfig(configName)
+
+            configFile:Register("featureToggle", featureToggle)
+            configFile:Register("intensitySlider", intensitySlider)
+            configFile:Register("modeDropdown", modeDropdown)
+            configFile:Register("themeDropdown", themeDropdown)
+            configFile:Register("transparencySlider", transparencySlider)
+
+            configFile:Set("playerData", MyPlayerData)
+            configFile:Set("lastSave", os.date("%Y-%m-%d %H:%M:%S"))
+
+            if configFile:Save() then
+                WindUI:Notify({
+                    Title = "保存配置",
+                    Content = "保存为：" .. configName,
+                    Icon = "check",
+                    Duration = 3
+                })
+            else
+                WindUI:Notify({
+                    Title = "错误",
+                    Content = "保存失败",
+                    Icon = "x",
+                    Duration = 3
+                })
+            end
+        end
+    })
+
+    TabHandles.Config:Button({
+        Title = "加载配置",
+        Icon = "folder",
+        Callback = function()
+            configFile = ConfigManager:CreateConfig(configName)
+            local loadedData = configFile:Load()
+
+            if loadedData then
+                if loadedData.playerData then
+                    MyPlayerData = loadedData.playerData
+                end
+
+                local lastSave = loadedData.lastSave or "Unknown"
+                WindUI:Notify({
+                    Title = "加载配置",
+                    Content = "正在加载：" .. configName .. "\n上次保存：" .. lastSave,
+                    Icon = "refresh-cw",
+                    Duration = 5
+                })
+
+                TabHandles.Config:Paragraph({
+                    Title = "玩家数据",
+                    Desc = string.format("名字: %s\n等级: %d\n库存: %s", MyPlayerData.name, MyPlayerData.level,
+                        table.concat(MyPlayerData.inventory, ", "))
+                })
+            else
+                WindUI:Notify({
+                    Title = "错误",
+                    Content = "加载失败",
+                    Icon = "x",
+                    Duration = 3
+                })
+            end
+        end
+    })
+else
+    TabHandles.Config:Paragraph({
+        Title = "配置管理不可用",
+        Desc = "此功能需要配置管理",
+        Image = "alert-triangle",
+        ImageSize = 20,
+        Color = "White"
+    })
+end
+
+local footerSection = Window:Section({
+    Title = "Rb脚本中心_付费版"
+})
+
+Window:OnClose(function()
+    print("Window closed")
+
+    if ConfigManager and configFile then
+        configFile:Set("playerData", MyPlayerData)
+        configFile:Set("lastSave", os.date("%Y-%m-%d %H:%M:%S"))
+        configFile:Save()
+        print("Config auto-saved on close")
+    end
+end)
+
+Window:OnDestroy(function()
+    print("Window destroyed")
+end)
